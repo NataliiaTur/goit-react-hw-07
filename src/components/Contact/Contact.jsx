@@ -2,11 +2,12 @@ import css from "./Contact.module.css";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { IoPersonSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteContact } from "../../redux/contactsSlice";
+import { deleteContactThunk } from "../../redux/contactsOps";
+import { selectContacts } from "../../redux/contactsSlice";
 
 const Contact = ({ data }) => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
+  const contacts = useSelector(selectContacts);
 
   return (
     <div className={css.wrapper}>
@@ -20,9 +21,10 @@ const Contact = ({ data }) => {
           <p>{data.number}</p>
         </div>
       </div>
+
       <button
         className={css.button}
-        onClick={() => dispatch(deleteContact(data.id))}
+        onClick={() => dispatch(deleteContactThunk(data.id))}
         type="button"
       >
         Delete

@@ -4,7 +4,8 @@ import { useId } from "react";
 import * as Yup from "yup";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact, selectContacts } from "../../redux/contactsSlice";
+import { addContactThunk } from "../../redux/contactsOps";
 
 const ContactFormSchema = Yup.object().shape({
   name: Yup.string()
@@ -30,7 +31,7 @@ const ContactForm = () => {
   const nameFieldId = useId();
   const numberFieldId = useId();
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, actions) => {
     const isDuplicate = contacts.some(
@@ -42,10 +43,9 @@ const ContactForm = () => {
     }
 
     dispatch(
-      addContact({
+      addContactThunk({
         name: values.name.trim(),
         number: values.number.trim(),
-        id: nanoid(),
       })
     );
 
